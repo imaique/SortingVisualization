@@ -1,4 +1,4 @@
-# SortingVisualization
+# Sorting Visualization
  **NOTE**: The project currently only visualizes selection sort. I will add more features, improve the visualizations and add more sorting algorithms in the free time I get this semester (Summer 2021).
  
  (IN PROGRESS) This is a sorting visualizer.\
