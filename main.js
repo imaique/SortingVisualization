@@ -156,11 +156,12 @@ async function insertionSort(speed) {
     // for [x][y][z]
     for (let i = 1; i < mainArray.length; i++) {
         // let currentHeight = [z]
-        mainArray[i].element.style.backgroundColor = matchLineColor;
+
         let currentHeight = mainArray[i].height;
         // [z] < [y] ?
         if (currentHeight < mainArray[i - 1].height) {
             // [z] [y]
+            mainArray[i - 1].element.style.backgroundColor = matchLineColor;
             mainArray[i].element.style.backgroundColor = matchLineColor;
             await sleepSwitchLines(i - 1, i, speed);
             mainArray[i].element.style.backgroundColor = touchedColor;
@@ -182,8 +183,13 @@ async function insertionSort(speed) {
                     break;
                 }
             }
+            mainArray[0].element.style.backgroundColor = touchedColor;
 
-        } else (mainArray[i - 1].element.style.backgroundColor = noMatchLineColor);
+        } else {
+            mainArray[i - 1].element.style.backgroundColor = noMatchLineColor;
+            await sleep(speed);
+            mainArray[i - 1].element.style.backgroundColor = touchedColor;
+        }
     }
 
 }
