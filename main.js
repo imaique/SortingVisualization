@@ -17,6 +17,7 @@ speedInput.addEventListener('input', updateSpeed);
 const sortingTypes = [[algoName = "Selection", functionName = selectionSort], [algoName = "Insertion", functionName = insertionSort]
     , [algoName = "Bubble", functionName = bubbleSort]];
 const sortingDOM = document.getElementById("algorithmPick");
+const nDOM = document.getElementById("n");
 var selectedSorting = selectionSort;
 
 function createSortingInputs(sortingTypes, sortingDOM) {
@@ -214,6 +215,7 @@ function createLines() {
     isComplete = false;
     mainArray = [];
     board.textContent = "";
+    nDOM.innerText = nbOfElements;
 
     for (let i = 0; i < nbOfElements; i++) {
         let lineDOM = document.createElement("li");
