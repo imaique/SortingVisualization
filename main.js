@@ -103,7 +103,7 @@ async function startPress() {
 }
 // s for start e for end
 async function mergerSort(s, e, speed){
-    console.log(s + " " + e)
+    
     if (s>=e){
         return;
     }
@@ -111,11 +111,16 @@ async function mergerSort(s, e, speed){
     let m = s + Math.floor((e-s)/2);
     await mergerSort(s,m,speed);
     await mergerSort(m+1,e,speed);
-    await merge(s,m,e,speed)
+    await merge(s,m,e,speed);
 
 }
 
 async function merge(s, m, e, speed){
+    let color;
+    if ((e-s) === mainArray.length - 1) {
+        color = completeLineColor;
+    }
+    else color = touchedColor;
     let lenL = m - s + 1;
     let lenR = e - m;
 
@@ -137,31 +142,34 @@ async function merge(s, m, e, speed){
 
     while (l < lenL && r < lenR){
         if (left[l] <= right[r]){
-            mainArray[i].setNewHeight(left[l]);
-            await sleep(speed);
+            await mergeAnimate(i,left[l],speed,color);
             l++;
         }
         else {
-            mainArray[i].setNewHeight(right[r]);
-            await sleep(speed);
+            await mergeAnimate(i,right[r],speed,color);
             r++;
         }
         i++;
     }
 
     while (l<lenL){
-        mainArray[i].setNewHeight(left[l]);
-        await sleep(speed);
+        await mergeAnimate(i,left[l],speed,color);
         l++;
         i++;
     }
 
     while (r<lenR){
-        mainArray[i].setNewHeight(right[r]);
-        await sleep(speed);
+        await mergeAnimate(i,right[r],speed,color);
         r++;
         i++;
     }
+}
+async function mergeAnimate(i,height, speed,color){
+
+    mainArray[i].element.style.backgroundColor = matchLineColor;
+    mainArray[i].setNewHeight(height);
+    await sleep(speed);
+    mainArray[i].element.style.backgroundColor = color;
 }
 
 // slightly optimized bubble sort

@@ -9,7 +9,7 @@ ul#hList li {
   display: inline-block;
 }
 .line {
-  transition: 0.05s all ease;
+  transition: 0.01s all ease;
   vertical-align: top;
   background-color: #4d5061;
   width: 7px;
