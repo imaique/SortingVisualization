@@ -1,6 +1,6 @@
 var board;
 var mainArray;
-var nbOfElements = 50;
+var nbOfElements = 100;
 var range = 30;
 const defaultLineColor = "#4D5061";
 const noMatchLineColor = "#EF626C";
@@ -14,7 +14,7 @@ var isComplete;
 var isStarted = false;
 const speedInput = document.getElementById("speed");
 speedInput.addEventListener('input', updateSpeed);
-const sortingTypes = [[algoName = "Selection", functionName = selectionSort], [algoName = "Insertion", functionName = insertionSort]
+const sortingTypes = [[algoName = "Merge", functionName = mergerSort],[algoName = "Selection", functionName = selectionSort], [algoName = "Insertion", functionName = insertionSort]
     , [algoName = "Bubble", functionName = bubbleSort]];
 const sortingDOM = document.getElementById("algorithmPick");
 const nDOM = document.getElementById("n");
@@ -76,7 +76,7 @@ function colorAllGreen() {
     });
 }
 async function startPress() {
-    if (isStarted) return;
+    if (isStarted || isComplete) return;
     isStarted = true;
     /*
     todo:
@@ -85,14 +85,83 @@ async function startPress() {
     -one choice checklist to chose algorithm with if statements in here
     */
     // it's a switch statement for now, but you could find a way to store a function in each radios
+    
+    if (selectedSorting === mergerSort){
+        await mergerSort(0,mainArray.length-1,selectedSpeed);
+    }
+    else{
     await selectedSorting(selectedSpeed);
+    }
     for (const line of mainArray) {
         line.element.style.backgroundColor = completeLineColor;
         await sleep(15);
     }
-
+    
+    
     isStarted = false;
     isComplete = true;
+}
+// s for start e for end
+async function mergerSort(s, e, speed){
+    console.log(s + " " + e)
+    if (s>=e){
+        return;
+    }
+    // middle
+    let m = s + Math.floor((e-s)/2);
+    await mergerSort(s,m,speed);
+    await mergerSort(m+1,e,speed);
+    await merge(s,m,e,speed)
+
+}
+
+async function merge(s, m, e, speed){
+    let lenL = m - s + 1;
+    let lenR = e - m;
+
+    let left = new Array(lenL);
+    let right = new Array(lenR);
+
+    for (let i = 0; i < lenL; i++){
+        left[i] = mainArray[s + i].height;
+    }
+    for (let i = 0; i < lenR; i++){
+        right[i] = mainArray[m + i + 1].height;
+    }
+
+    // initial indexes of the temp arrays
+    let l = 0;
+    let r = 0;
+    // initial index of main array
+    let i = s;
+
+    while (l < lenL && r < lenR){
+        if (left[l] <= right[r]){
+            mainArray[i].setNewHeight(left[l]);
+            await sleep(speed);
+            l++;
+        }
+        else {
+            mainArray[i].setNewHeight(right[r]);
+            await sleep(speed);
+            r++;
+        }
+        i++;
+    }
+
+    while (l<lenL){
+        mainArray[i].setNewHeight(left[l]);
+        await sleep(speed);
+        l++;
+        i++;
+    }
+
+    while (r<lenR){
+        mainArray[i].setNewHeight(right[r]);
+        await sleep(speed);
+        r++;
+        i++;
+    }
 }
 
 // slightly optimized bubble sort
@@ -127,8 +196,8 @@ async function bubbleSort(speed) {
 
 async function selectionSort(speed) {
     for (let i = 0; i < mainArray.length; i++) {
-        let mainColor =
-            mainArray[i].element.style.backgroundColor = matchLineColor;
+        
+        mainArray[i].element.style.backgroundColor = matchLineColor;
         let min = mainArray[i].height;
         let minIndex = i;
         for (let j = i + 1; j < mainArray.length; j++) {
