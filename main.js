@@ -18,7 +18,7 @@ const sortingTypes = [[algoName = "Merge", functionName = mergerSort],[algoName 
     , [algoName = "Bubble", functionName = bubbleSort]];
 const sortingDOM = document.getElementById("algorithmPick");
 const nDOM = document.getElementById("n");
-var selectedSorting = selectionSort;
+var selectedSorting = mergerSort;
 
 function createSortingInputs(sortingTypes, sortingDOM) {
     sortingTypes.forEach(e => {
@@ -120,7 +120,7 @@ async function merge(s, m, e, speed){
     if ((e-s) === mainArray.length - 1) {
         color = completeLineColor;
     }
-    else color = touchedColor;
+    else color = "#89BD9E";
     let lenL = m - s + 1;
     let lenR = e - m;
 
@@ -129,9 +129,13 @@ async function merge(s, m, e, speed){
 
     for (let i = 0; i < lenL; i++){
         left[i] = mainArray[s + i].height;
+        mainArray[s + i].element.style.backgroundColor = "#F0C987";
+        await sleep(speed);
     }
     for (let i = 0; i < lenR; i++){
         right[i] = mainArray[m + i + 1].height;
+        mainArray[m + i + 1].element.style.backgroundColor = "#DB4C40";
+        await sleep(speed);
     }
 
     // initial indexes of the temp arrays
